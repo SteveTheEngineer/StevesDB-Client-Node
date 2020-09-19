@@ -1,5 +1,14 @@
 import { ComparatorOperation } from "./comparatoroperation";
 
 export interface EntryFilter {
-    [key: string]: {operation: ComparatorOperation, value: string | boolean | number} | string | boolean | number;
+    [key: string]: {
+        /**
+         * Comparator operation
+         */
+        operation: ComparatorOperation;
+        /**
+         * Compared value
+         */
+        value: string | boolean | number;
+    } | string | boolean | number;
 }

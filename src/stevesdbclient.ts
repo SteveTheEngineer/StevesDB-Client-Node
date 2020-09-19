@@ -44,9 +44,16 @@ import { ModifyEntryResponsePacket } from "./packets/in/modifyentryresponsepacke
 import { RemoveEntryResponsePacket } from "./packets/in/removeentryresponsepacket";
 import { EntryValuesModifier } from "./database/entryvaluesmodifier";
 import { EntryValueOperation } from "./database/entryvalueoperation";
+import { EntryValues } from "./database/entryvalues";
 
 export class StevesDBClient {
+    /**
+     * The protocol version this client was made against
+     */
     public static readonly PROTOCOL_VERSION: number = 2;
+    /**
+     * Version of the client itself
+     */
     public static readonly CLIENT_VERSION: string = require("../package.json").version;
 
     private connected: boolean = false;
@@ -84,6 +91,13 @@ export class StevesDBClient {
     public constructor() {
         
     }
+
+    /**
+     * Connect to a database
+     * @param host server host
+     * @param port server port
+     * @param options connection options
+     */
     public connect(host: string, port = 2540, options = {encryption: true}): Promise<void> {
         return new Promise(((resolve, reject) => {
             if(this.connected) {
@@ -128,6 +142,12 @@ export class StevesDBClient {
         }));
     }
 
+    /**
+     * Log in to the database
+     * @param username user username
+     * @param password user password
+     * @returns true, if the login details are correct
+     */
     public async login(username: string, password: string): Promise<boolean> {
         this.sendPacket(new LoginPacket(username, password));
         const success: boolean = (await this.waitForResponse(LoginResponsePacket)).isSuccessful();
@@ -136,6 +156,11 @@ export class StevesDBClient {
         }
         return success;
     }
+
+    /**
+     * Log out from the database
+     * @returns true, if the connnetion has been successfuly unauthorized
+     */
     public async logout(): Promise<boolean> {
         this.sendPacket(new LogoutPacket());
         const success: boolean = (await this.waitForResponse(LogoutResponsePacket)).isSuccessful();
@@ -144,13 +169,27 @@ export class StevesDBClient {
         }
         return success;
     }
+
+    /**
+     * Get the current user username
+     * @returns user username if the connection is authorized, undefined otherwise
+     */
     public getUsername(): string | undefined {
         return this.username;
     }
+
+    /**
+     * Check whether the connection is authorized
+     * @returns true, if connection is auhorized
+     */
     public isLoggedIn(): boolean {
         return this.username != undefined;
     }
 
+    /**
+     * Get the existing databases
+     * @returns the list of the databases
+     */
     public async getDatabases(): Promise<Database[]> {
         this.sendPacket(new ListDatabasesPacket());
         const response: ListDatabasesResponsePacket = await this.waitForResponse(ListDatabasesResponsePacket);
@@ -160,6 +199,12 @@ export class StevesDBClient {
             return [];
         }
     }
+
+    /**
+     * Get the database by it's name if it exists, undefined otherwise
+     * @param name database name
+     * @returns database instance if it exists, undefined otherwise
+     */
     public async getDatabaseIfExists(name: string): Promise<Database | undefined> {
         const database: Database = this.getDatabase(name);
         if(await database.exists()) {
@@ -168,9 +213,20 @@ export class StevesDBClient {
             return undefined;
         }
     }
+
+    /**
+     * Get the database by it's name
+     * @param name database name
+     * @returns database instance 
+     */
     public getDatabase(name: string): Database {
         return new Database(this, name);
     }
+    /**
+     * Alias for @method getDatabase
+     * @param name database name
+     * @returns database instance
+     */
     public database(name: string): Database {
         return this.getDatabase(name);
     }
@@ -231,5 +287,6 @@ export {
     EntryFilter,
     ComparatorOperation,
     EntryValuesModifier,
+    EntryValues,
     EntryValueOperation
 };

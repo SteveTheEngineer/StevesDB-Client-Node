@@ -33,10 +33,19 @@ export class Table {
         this.name = name;
     }
 
+    /**
+     * Get the table name
+     * @returns the table name
+     */
     public getName(): string {
         return this.name;
     }
 
+    /**
+     * Get the total number of entries
+     * @param filter the filter to apply
+     * @returns the total number of entries
+     */
     public async getTotalEntries(filter: EntryFilter | undefined = undefined): Promise<number> {
         this.parent.parent.sendPacket(new ListEntriesPacket(this.parent.getName(), this.name, 0, 0, filter != undefined ? filter : {}));
         const response: ListEntriesResponsePacket = await this.parent.parent.waitForResponse(ListEntriesResponsePacket);
@@ -47,10 +56,22 @@ export class Table {
         }
     }
 
+    /**
+     * Alias for @method getTotalEntries
+     * @param filter the filter to apply
+     * @returns the total number of entries
+     */
     public size(filter: EntryFilter | undefined = undefined): Promise<number> {
         return this.getTotalEntries(filter);
     }
 
+    /**
+     * Get the entry values
+     * @param filter the filter to apply
+     * @param start start index
+     * @param end end index
+     * @returns the entries values
+     */
     public async getEntries(filter: EntryFilter | undefined = undefined, start = -0x80000000, end = 0x7FFFFFFF): Promise<EntryValues[]> {
         this.parent.parent.sendPacket(new ListEntriesPacket(this.parent.getName(), this.name, start, end, filter != undefined ? filter : {}));
         const response: ListEntriesResponsePacket = await this.parent.parent.waitForResponse(ListEntriesResponsePacket);
@@ -80,18 +101,42 @@ export class Table {
         }
     }
 
+    /**
+     * Like @method getEntries but it only returns the entry at the specified index
+     * @param filter the filter to apply
+     * @param index the entry index
+     * @returns the entry values
+     */
     public async getEntry(filter: EntryFilter | undefined = undefined, index = 0): Promise<EntryValues | undefined> {
         return (await this.getEntries(filter, index, index))[0];
     }
 
+    /**
+     * Alias for @method getEntries
+     * @param filter the filter to apply
+     * @param start start index
+     * @param end end index
+     * @returns the entries values
+     */
     public entries(filter: EntryFilter | undefined = undefined, start = -0x80000000, end = 0x7FFFFFFF): Promise<EntryValues[]> {
         return this.getEntries(filter, start, end);
     }
 
+    /**
+     * Alias for @method getEntry
+     * @param filter the filter to apply
+     * @param index the entry index
+     * @returns the entry values
+     */
     public entry(filter: EntryFilter | undefined = undefined, index = 0): Promise<EntryValues | undefined> {
         return this.getEntry(filter, index);
     }
 
+    /**
+     * Add an entry
+     * @param entry the entry values
+     * @returns true, if the entry was sucessfuly added
+     */
     public async addEntry(entry: EntryValues): Promise<boolean> {
         const values: Map<string, string> = new Map<string, string>();
         for(const pair of Object.entries(entry)) {
@@ -102,34 +147,72 @@ export class Table {
         return response.isSuccessful();
     }
 
+    /**
+     * Alias for @method addEntry
+     * @param entry the entry values
+     * @returns true, if the entry was successfuly added
+     */
     public add(entry: EntryValues): Promise<boolean> {
         return this.addEntry(entry);
     }
 
+    /**
+     * Remove entries from the table
+     * @param filter the filter to apply
+     * @returns true, if the entries were successfuly removed
+     */
     public async removeEntries(filter: EntryFilter): Promise<boolean> {
         this.parent.parent.sendPacket(new RemoveEntryPacket(this.parent.getName(), this.name, filter));
         const response: RemoveEntryResponsePacket = await this.parent.parent.waitForResponse(RemoveEntryResponsePacket);
         return response.isSuccessful();
     }
 
+    /**
+     * Alias for @method removeEntries
+     * @param filter the filter to apply
+     * @returns true, if the entries were successfuly removed
+     */
     public remove(filter: EntryFilter): Promise<boolean> {
         return this.removeEntries(filter);
     }
 
+    /**
+     * Modify entries of the table
+     * @param filter the filter apply
+     * @param values the values to modify
+     * @returns true, if at least one of the entries was successfuly modified
+     */
     public async modifyEntries(filter: EntryFilter, values: EntryValuesModifier): Promise<boolean> {
         this.parent.parent.sendPacket(new ModifyEntryPacket(this.parent.getName(), this.name, filter, values));
         const response: ModifyEntryResponsePacket = await this.parent.parent.waitForResponse(ModifyEntryResponsePacket);
         return response.isSuccessful();
     }
 
+    /**
+     * Alias for @method modifyEntries
+     * @param filter the filter to apply
+     * @param values the values to modify
+     * @returns true, if at least one of the entries was successfuly modified
+     */
     public modify(filter: EntryFilter, values: EntryValuesModifier): Promise<boolean> {
         return this.modifyEntries(filter, values);
     }
 
+    /**
+     * Get a column of the table
+     * @param name the column name
+     * @return column instance, or undefined if it does not exist
+     */
     public async getColumn(name: string): Promise<TableColumn | undefined> {
         return (await this.getColumns()).find(tc => tc.getName() === name);
     }
 
+    /**
+     * Add a column to the table
+     * @param type the column type
+     * @param name the column name
+     * @return column instance, or undefined if it failed
+     */
     public async addColumn(type: TableColumnType, name: string): Promise<TableColumn | undefined> {
         this.parent.parent.sendPacket(new AddColumnPacket(this.parent.getName(), this.name, type, name));
         const response: AddColumnResponsePacket = await this.parent.parent.waitForResponse(AddColumnResponsePacket);
@@ -140,6 +223,10 @@ export class Table {
         }
     }
 
+    /**
+     * Get the table columns
+     * @returns the table columns
+     */
     public async getColumns(): Promise<TableColumn[]> {
         this.parent.parent.sendPacket(new ListColumnsPacket(this.parent.getName(), this.name));
         const response: ListColumnsResponsePacket = await this.parent.parent.waitForResponse(ListColumnsResponsePacket);
@@ -150,6 +237,10 @@ export class Table {
         }
     }
 
+    /**
+     * Check whether does the table exist
+     * @returns true, if the table exists
+     */
     public async exists(): Promise<boolean> {
         this.parent.parent.sendPacket(new ListTablesPacket(this.parent.getName()));
         const response: ListTablesResponsePacket = await this.parent.parent.waitForResponse(ListTablesResponsePacket);
@@ -160,18 +251,31 @@ export class Table {
         }
     }
 
+    /**
+     * Create the table
+     * @returns true, if the table was successfuly created
+     */
     public async create(): Promise<boolean> {
         this.parent.parent.sendPacket(new CreateTablePacket(this.parent.getName(), this.name));
         const response: CreateTableResponsePacket = await this.parent.parent.waitForResponse(CreateTableResponsePacket);
         return response.isSuccessful();
     }
 
+    /**
+     * Delete the table
+     * @returns true, if the table was successfuly deleted
+     */
     public async delete(): Promise<boolean> {
         this.parent.parent.sendPacket(new DeleteTablePacket(this.parent.getName(), this.name));
         const response: DeleteTableResponsePacket = await this.parent.parent.waitForResponse(DeleteTableResponsePacket);
         return response.isSuccessful();
     }
 
+    /**
+     * Rename the table
+     * @param newName the new name of the table
+     * @returns true, if the table was successfuly renamed
+     */
     public async rename(newName: string): Promise<boolean> {
         this.parent.parent.sendPacket(new RenameTablePacket(this.parent.getName(), this.name, newName));
         const response: RenameTableResponsePacket = await this.parent.parent.waitForResponse(RenameTableResponsePacket);
