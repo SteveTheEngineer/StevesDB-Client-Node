@@ -57,7 +57,7 @@ export class Table {
     }
 
     /**
-     * Alias for @method getTotalEntries
+     * Alias for {@link getTotalEntries}
      * @param filter the filter to apply
      * @returns the total number of entries
      */
@@ -102,7 +102,7 @@ export class Table {
     }
 
     /**
-     * Like @method getEntries but it only returns the entry at the specified index
+     * Like {@link getEntries} but it only returns the entry at the specified index
      * @param filter the filter to apply
      * @param index the entry index
      * @returns the entry values
@@ -112,7 +112,7 @@ export class Table {
     }
 
     /**
-     * Alias for @method getEntries
+     * Alias for {@link getEntries}
      * @param filter the filter to apply
      * @param start start index
      * @param end end index
@@ -123,7 +123,7 @@ export class Table {
     }
 
     /**
-     * Alias for @method getEntry
+     * Alias for {@link getEntry}
      * @param filter the filter to apply
      * @param index the entry index
      * @returns the entry values
@@ -148,7 +148,7 @@ export class Table {
     }
 
     /**
-     * Alias for @method addEntry
+     * Alias for {@link addEntry}
      * @param entry the entry values
      * @returns true, if the entry was successfuly added
      */
@@ -168,7 +168,7 @@ export class Table {
     }
 
     /**
-     * Alias for @method removeEntries
+     * Alias for {@link removeEntries}
      * @param filter the filter to apply
      * @returns true, if the entries were successfuly removed
      */
@@ -189,7 +189,7 @@ export class Table {
     }
 
     /**
-     * Alias for @method modifyEntries
+     * Alias for {@link modifyEntries}
      * @param filter the filter to apply
      * @param values the values to modify
      * @returns true, if at least one of the entries was successfuly modified

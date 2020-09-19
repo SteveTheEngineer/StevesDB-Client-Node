@@ -5,7 +5,8 @@
   "main": "dist/stevesdbclient.js",
   "scripts": {
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "documentation": "typedoc --mode file --excludeExternals --excludePrivate --excludeProtected --out ./docs/ ./src/stevesdbclient.ts ./src/database/"
   },
   "repository": {
     "type": "git",
@@ -16,7 +17,7 @@
   },
   "homepage": "https://github.com/SteveTheEngineer/StevesDB-Client-Node",
   "keywords": [],
-  "author": "",
+  "author": "SteveTheEngineer",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^14.10.1",

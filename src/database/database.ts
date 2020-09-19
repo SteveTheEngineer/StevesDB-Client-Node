@@ -57,7 +57,7 @@ export class Database {
     }
 
     /**
-     * Alias for @method getTableIfExists
+     * Alias for {@link getTable}
      * @param name table name
      * @returns the table
      */
