@@ -223,7 +223,7 @@ export class StevesDBClient {
         return new Database(this, name);
     }
     /**
-     * Alias for @method getDatabase
+     * Alias for {@link getDatabase}
      * @param name database name
      * @returns database instance
      */
