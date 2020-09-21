@@ -1,5 +1,7 @@
 import { RemoveColumnResponsePacket } from "../packets/in/removecolumnresponsepacket";
+import { RenameColumnResponsePacket } from "../packets/in/renamecolumnresponsepacket";
 import { RemoveColumnPacket } from "../packets/out/removecolumnpacket";
+import { RenameColumnPacket } from "../packets/out/renamecolumnpacket";
 import { Table } from "../stevesdbclient";
 import { TableColumnType } from "./tablecolumntype";
 
@@ -31,16 +33,14 @@ export class TableColumn {
     }
 
     /**
-     * Check whether does the column exist
-     * @returns true, if the column exists
+     * Rename the column
+     * @param newName new table name
+     * @returns true, if the column was succesfuly renamed
      */
-    public async exists(): Promise<boolean> {
-        const columns: TableColumn[] | undefined = await this.parent?.getColumns();
-        if(columns != undefined) {
-            return columns.find(tc => tc.name === this.name) != undefined;
-        } else {
-            return false;
-        }
+    public async rename(newName: string): Promise<boolean> {
+        this.parent?.parent.parent.sendPacket(new RenameColumnPacket(this.parent.parent.getName(), this.parent.getName(), this.name, newName));
+        const response: RenameColumnResponsePacket | undefined = await this.parent?.parent.parent.waitForResponse(RenameColumnResponsePacket);
+        return response != undefined && response.isSuccessful();
     }
 
     /**
@@ -51,5 +51,18 @@ export class TableColumn {
         this.parent?.parent.parent.sendPacket(new RemoveColumnPacket(this.parent.parent.getName(), this.parent.getName(), this.name));
         const response: RemoveColumnResponsePacket | undefined = await this.parent?.parent.parent.waitForResponse(RemoveColumnResponsePacket);
         return response != undefined && response.isSuccessful();
+    }
+
+    /**
+     * Check whether does the column exist
+     * @returns true, if the column exists
+     */
+    public async exists(): Promise<boolean> {
+        const columns: TableColumn[] | undefined = await this.parent?.getColumns();
+        if(columns != undefined) {
+            return columns.find(tc => tc.name === this.name) != undefined;
+        } else {
+            return false;
+        }
     }
 }

@@ -89,6 +89,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="tablecolumn.html#getname" class="tsd-kind-icon">get<wbr>Name</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="tablecolumn.html#gettype" class="tsd-kind-icon">get<wbr>Type</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="tablecolumn.html#remove" class="tsd-kind-icon">remove</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="tablecolumn.html#rename" class="tsd-kind-icon">rename</a></li>
 							</ul>
 						</section>
 					</div>
@@ -106,7 +107,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SteveTheEngineer/StevesDB-Client-Node/blob/d447419/src/database/tablecolumn.ts#L9">database/tablecolumn.ts:9</a></li>
+									<li>Defined in <a href="https://github.com/SteveTheEngineer/StevesDB-Client-Node/blob/4028baf/src/database/tablecolumn.ts#L11">database/tablecolumn.ts:11</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -138,7 +139,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SteveTheEngineer/StevesDB-Client-Node/blob/d447419/src/database/tablecolumn.ts#L37">database/tablecolumn.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/SteveTheEngineer/StevesDB-Client-Node/blob/4028baf/src/database/tablecolumn.ts#L60">database/tablecolumn.ts:60</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -161,7 +162,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SteveTheEngineer/StevesDB-Client-Node/blob/d447419/src/database/tablecolumn.ts#L29">database/tablecolumn.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/SteveTheEngineer/StevesDB-Client-Node/blob/4028baf/src/database/tablecolumn.ts#L31">database/tablecolumn.ts:31</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -184,7 +185,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SteveTheEngineer/StevesDB-Client-Node/blob/d447419/src/database/tablecolumn.ts#L21">database/tablecolumn.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/SteveTheEngineer/StevesDB-Client-Node/blob/4028baf/src/database/tablecolumn.ts#L23">database/tablecolumn.ts:23</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -207,7 +208,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/SteveTheEngineer/StevesDB-Client-Node/blob/d447419/src/database/tablecolumn.ts#L50">database/tablecolumn.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/SteveTheEngineer/StevesDB-Client-Node/blob/4028baf/src/database/tablecolumn.ts#L50">database/tablecolumn.ts:50</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -217,6 +218,38 @@
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>true, if the column was succesfuly removed</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="rename" class="tsd-anchor"></a>
+					<h3>rename</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">rename<span class="tsd-signature-symbol">(</span>newName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/SteveTheEngineer/StevesDB-Client-Node/blob/4028baf/src/database/tablecolumn.ts#L40">database/tablecolumn.ts:40</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Rename the column</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>newName: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>new table name</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>true, if the column was succesfuly renamed</p>
 						</li>
 					</ul>
 				</section>
@@ -269,6 +302,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="tablecolumn.html#remove" class="tsd-kind-icon">remove</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="tablecolumn.html#rename" class="tsd-kind-icon">rename</a>
 							</li>
 						</ul>
 					</li>
