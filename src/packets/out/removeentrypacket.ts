@@ -7,12 +7,16 @@ export class RemoveEntryPacket extends PacketOut {
     private readonly database: string;
     private readonly table: string;
     private readonly filters: EntryFilter;
+    private readonly startIndex: number;
+    private readonly endIndex: number;
 
-    public constructor(database: string, table: string, filters: EntryFilter) {
+    public constructor(database: string, table: string, filters: EntryFilter, startIndex: number, endIndex: number) {
         super();
         this.database = database;
         this.table = table;
         this.filters = filters;
+        this.startIndex = startIndex;
+        this.endIndex = endIndex;
     }
 
     serialize(): Buffer {
@@ -30,6 +34,10 @@ export class RemoveEntryPacket extends PacketOut {
             builder.unsignedByte(operation);
             builder.string(value);
         }
+
+        builder.int(this.startIndex);
+        builder.int(this.endIndex);
+
         return builder.build();
     }
     getId(): number {

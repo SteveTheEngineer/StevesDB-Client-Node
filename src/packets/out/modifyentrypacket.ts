@@ -9,14 +9,18 @@ export class ModifyEntryPacket extends PacketOut {
     private readonly database: string;
     private readonly table: string;
     private readonly filters: EntryFilter;
+    private readonly startIndex: number;
+    private readonly endIndex: number;
     private readonly values: EntryValuesModifier;
 
-    public constructor(database: string, table: string, filters: EntryFilter, values: EntryValuesModifier) {
+    public constructor(database: string, table: string, filters: EntryFilter, startIndex: number, endIndex: number, values: EntryValuesModifier) {
         super();
         this.database = database;
         this.table = table;
         this.filters = filters;
         this.values = values;
+        this.startIndex = startIndex;
+        this.endIndex = endIndex;
     }
 
     serialize(): Buffer {
@@ -34,6 +38,10 @@ export class ModifyEntryPacket extends PacketOut {
             builder.unsignedByte(operation);
             builder.string(value);
         }
+
+        builder.int(this.startIndex);
+        builder.int(this.endIndex);
+        
         builder.int(Object.keys(this.values).length);
         for(const column in this.values) {
             const modifier = this.values[column];

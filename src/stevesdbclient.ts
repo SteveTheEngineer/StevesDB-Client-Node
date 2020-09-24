@@ -50,7 +50,7 @@ export class StevesDBClient {
     /**
      * The protocol version this client was made against
      */
-    public static readonly PROTOCOL_VERSION: number = 2;
+    public static readonly PROTOCOL_VERSION: number = 3;
     /**
      * Version of the client itself
      */

@@ -1,3 +1,4 @@
+import { start } from "repl";
 import { AddColumnResponsePacket } from "../packets/in/addcolumnresponsepacket";
 import { AddEntryResponsePacket } from "../packets/in/addentryresponsepacket";
 import { CreateTableResponsePacket } from "../packets/in/createtableresponsepacket";
@@ -159,12 +160,14 @@ export class Table {
     /**
      * Remove entries from the table
      * @param filter the filter to apply
-     * @returns true, if the entries were successfuly removed
+     * @param startIndex start index
+     * @param endIndex end index
+     * @returns true, if at least one of the entries was successfuly removed
      */
-    public async removeEntries(filter: EntryFilter): Promise<boolean> {
-        this.parent.parent.sendPacket(new RemoveEntryPacket(this.parent.getName(), this.name, filter));
+    public async removeEntries(filter: EntryFilter, startIndex: number = -0x80000000, endIndex: number = 0x7FFFFFFF): Promise<boolean> {
+        this.parent.parent.sendPacket(new RemoveEntryPacket(this.parent.getName(), this.name, filter, startIndex, endIndex));
         const response: RemoveEntryResponsePacket = await this.parent.parent.waitForResponse(RemoveEntryResponsePacket);
-        return response.isSuccessful();
+        return response.isSuccessful() && response.getRemovedAmount() > 0;
     }
 
     /**
@@ -180,12 +183,14 @@ export class Table {
      * Modify entries of the table
      * @param filter the filter apply
      * @param values the values to modify
+     * @param startIndex start index
+     * @param endIndex end index
      * @returns true, if at least one of the entries was successfuly modified
      */
-    public async modifyEntries(filter: EntryFilter, values: EntryValuesModifier): Promise<boolean> {
-        this.parent.parent.sendPacket(new ModifyEntryPacket(this.parent.getName(), this.name, filter, values));
+    public async modifyEntries(filter: EntryFilter, values: EntryValuesModifier, startIndex: number = -0x80000000, endIndex: number = 0x7FFFFFFF): Promise<boolean> {
+        this.parent.parent.sendPacket(new ModifyEntryPacket(this.parent.getName(), this.name, filter, startIndex, endIndex, values));
         const response: ModifyEntryResponsePacket = await this.parent.parent.waitForResponse(ModifyEntryResponsePacket);
-        return response.isSuccessful();
+        return response.isSuccessful() && response.getModifiedAmount() > 0;
     }
 
     /**
